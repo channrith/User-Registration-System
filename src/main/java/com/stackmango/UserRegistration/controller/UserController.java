@@ -5,7 +5,7 @@ import com.stackmango.UserRegistration.service.UserService;
 
 import jakarta.validation.Valid;
 
-// import java.util.Optional;
+import java.util.Optional;
 
 // import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,15 +23,6 @@ public class UserController {
 
   // @Autowired
   // UserService userService;
-
-  /*
-   * Potential Issues with Field Injection
-   * 1. Field injection relies on reflection, which is less efficient and harder
-   * to debug
-   * 2. Dependencies are injected after object construction, which can lead to
-   * unexpected NullPointerExceptions if the object is used before injection is
-   * complete
-   */
 
   private final UserService userService;
 
@@ -57,22 +48,14 @@ public class UserController {
 
   @GetMapping("/{id}")
   public String getUserById(@PathVariable Long id, Model model) {
-    return userService.getUserById(id)
-        .map(user -> {
-          model.addAttribute("user", user);
-          return "user-details";
-        })
-        .orElseGet(() -> {
-          model.addAttribute("errorMessage", "User not found");
-          return "error";
-        });
+    Optional<User> userOptional = userService.getUserById(id);
+    if (userOptional.isPresent()) {
+      model.addAttribute("user", userOptional.get());
+      return "user-details";
+    }
 
-    // Optional<User> userOptional = userService.getUserById(id);
-    // if (userOptional.isPresent()) {
-    // model.addAttribute("user", userOptional.get());
-    // return "user-details";
-    // }
-    // return "error";
+    model.addAttribute("errorMessage", "User not found");
+    return "error";
   }
 
   @GetMapping("/{id}/edit")
@@ -86,13 +69,6 @@ public class UserController {
           model.addAttribute("errorMessage", "User not found");
           return "error";
         });
-
-    // Optional<User> userOptional = userService.getUserById(id);
-    // if (userOptional.isPresent()) {
-    // model.addAttribute("user", userOptional.get());
-    // return "edit";
-    // }
-    // return "error";
   }
 
   @PostMapping("/{id}/update")
