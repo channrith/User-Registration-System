@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+</head>
+<body>
+    <h2 style="text-align: center;">User Details</h2>
+    
+    <table style="margin: auto; border-collapse: collapse; width: 50%;">
+        <tr>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Field</th>
+            <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Value</th>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">ID</td>
+            <td style="border: 1px solid #ddd; padding: 8px;" th:text="${user.id}"></td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">Username</td>
+            <td style="border: 1px solid #ddd; padding: 8px;" th:text="${user.userName}"></td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd; padding: 8px;">Email</td>
+            <td style="border: 1px solid #ddd; padding: 8px;" th:text="${user.email}"></td>
+        </tr>
+    </table>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a th:href="@{/user/{id}/edit(id=${user.id})}" style="margin-right: 10px;">Edit</a>
+        <a th:href="@{/user/{id}/delete(id=${user.id})}" style="margin-left: 10px;" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+    </div>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a th:href="@{/}">Back to Home</a>
+    </div>
+</body>
+</html>
